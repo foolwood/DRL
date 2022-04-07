@@ -26,8 +26,8 @@ This is a PyTorch implementation of the paper [Disentangled Representation Learn
 
 #### Setup code environment
 ```shell
-git clone https://github.com/foolwood/Deep-Vision.git
-cd Deep-Vision
+git clone https://github.com/foolwood/DRL.git
+cd DRL
 conda create -n drl python=3.9
 conda activate drl
 pip install -r requirements.txt -i https://pypi.tuna.tsinghua.edu.cn/simple/
