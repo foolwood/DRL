@@ -1,6 +1,0 @@
-numpy
-decord==0.4.0
-Pillow
-opencv-python
-#torch==1.8.1+cu102
-#torchvision==0.9.1+cu102
