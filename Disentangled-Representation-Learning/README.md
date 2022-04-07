@@ -6,6 +6,7 @@ This is a PyTorch implementation of the paper [Disentangled Representation Learn
 <p align="center">
   <img src="demo/pipeline.png" width="800">
 </p>
+
 ```
 @Article{DRLTVR2022,
   author  = {Qiang Wang and Yanhao Zhang and Yun Zheng and Pan Pan and Xian-Sheng Hua},
