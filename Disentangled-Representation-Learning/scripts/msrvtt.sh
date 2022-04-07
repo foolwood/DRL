@@ -1,0 +1,35 @@
+# baseline
+## CLIP zero-shot
+CUDA_VISIBLE_DEVICES=0,1,2,3 python -m torch.distributed.launch --nproc_per_node=4 main.py --do_eval 1 --workers 8 --n_display 50 --epochs 5 --lr 1e-4 --coef_lr 1e-3 --batch_size 128 --batch_size_val 128 --anno_path data/MSR-VTT/anns --video_path data/MSR-VTT/videos --datatype msrvtt --max_words 32 --max_frames 12 --video_framerate 1 --base_encoder ViT-B/32 --agg_module None --interaction dp --output_dir ckpts/ckpt_msrvtt_zeroshot
+
+# Interaction
+## Finetune Dot Product Interaction
+CUDA_VISIBLE_DEVICES=0,1,2,3 python -m torch.distributed.launch --nproc_per_node=4 main.py --do_train 1 --workers 8 --n_display 50 --epochs 5 --lr 1e-4 --coef_lr 1e-3 --batch_size 128 --batch_size_val 128 --anno_path data/MSR-VTT/anns --video_path data/MSR-VTT/videos --datatype msrvtt --max_words 32 --max_frames 12 --video_framerate 1 --base_encoder ViT-B/32 --agg_module None --interaction dp --output_dir ckpts/ckpt_msrvtt_dp1
+## Add Temporal Transformer
+CUDA_VISIBLE_DEVICES=0,1,2,3 python -m torch.distributed.launch --nproc_per_node=4 main.py --do_train 1 --workers 8 --n_display 50 --epochs 5 --lr 1e-4 --coef_lr 1e-3 --batch_size 128 --batch_size_val 128 --anno_path data/MSR-VTT/anns --video_path data/MSR-VTT/videos --datatype msrvtt --max_words 32 --max_frames 12 --video_framerate 1 --base_encoder ViT-B/32 --agg_module seqTransf --interaction dp --output_dir ckpts/ckpt_msrvtt_dp2
+# Cross-Transformer Interaction
+CUDA_VISIBLE_DEVICES=0,1,2,3 python -m torch.distributed.launch --nproc_per_node=4 main.py --do_train 1 --workers 8 --n_display 50 --epochs 5 --lr 1e-4 --coef_lr 1e-3 --batch_size 128 --batch_size_val 128 --anno_path data/MSR-VTT/anns --video_path data/MSR-VTT/videos --datatype msrvtt --max_words 32 --max_frames 12 --video_framerate 1 --base_encoder ViT-B/32 --agg_module None --interaction xti --output_dir ckpts/ckpt_msrvtt_xti1
+CUDA_VISIBLE_DEVICES=0,1,2,3 python -m torch.distributed.launch --nproc_per_node=4 main.py --do_train 1 --workers 8 --n_display 50 --epochs 5 --lr 1e-4 --coef_lr 1e-3 --batch_size 128 --batch_size_val 128 --anno_path data/MSR-VTT/anns --video_path data/MSR-VTT/videos --datatype msrvtt --max_words 32 --max_frames 12 --video_framerate 1 --base_encoder ViT-B/32 --agg_module seqTransf --interaction xti --output_dir ckpts/ckpt_msrvtt_xti2
+# Token-wise Interaction
+CUDA_VISIBLE_DEVICES=0,1,2,3 python -m torch.distributed.launch --nproc_per_node=4 main.py --do_train 1 --workers 8 --n_display 50 --epochs 5 --lr 1e-4 --coef_lr 1e-3 --batch_size 128 --batch_size_val 128 --anno_path data/MSR-VTT/anns --video_path data/MSR-VTT/videos --datatype msrvtt --max_words 32 --max_frames 12 --video_framerate 1 --base_encoder ViT-B/32 --agg_module seqTransf --interaction ti --output_dir ckpts/ckpt_msrvtt_ti
+# Weighted Token-wise Interaction
+CUDA_VISIBLE_DEVICES=0,1,2,3 python -m torch.distributed.launch --nproc_per_node=4 main.py --do_train 1 --workers 8 --n_display 50 --epochs 5 --lr 1e-4 --coef_lr 1e-3 --batch_size 128 --batch_size_val 128 --anno_path data/MSR-VTT/anns --video_path data/MSR-VTT/videos --datatype msrvtt --max_words 32 --max_frames 12 --video_framerate 1 --base_encoder ViT-B/32 --agg_module seqTransf --interaction wti --wti_arch 2 --output_dir ckpts/ckpt_msrvtt_wti
+
+# Channel Decorrelation Regularization
+# Dot Product Interaction + CDCR
+CUDA_VISIBLE_DEVICES=0,1,2,3 python -m torch.distributed.launch --nproc_per_node=4 main.py --do_train 1 --workers 8 --n_display 50 --epochs 5 --lr 1e-4 --coef_lr 1e-3 --batch_size 128 --batch_size_val 128 --anno_path data/MSR-VTT/anns --video_path data/MSR-VTT/videos --datatype msrvtt --max_words 32 --max_frames 12 --video_framerate 1 --base_encoder ViT-B/32 --agg_module seqTransf --interaction dp --cdcr 1 --cdcr_alpha1 0.14 --cdcr_alpha2 0.0 --cdcr_lambda 0.001 --output_dir ckpts/ckpt_msrvtt_dp_cdcr
+# Token-wise Interaction + CDCR
+CUDA_VISIBLE_DEVICES=0,1,2,3 python -m torch.distributed.launch --nproc_per_node=4 main.py --do_train 1 --workers 8 --n_display 50 --epochs 5 --lr 1e-4 --coef_lr 1e-3 --batch_size 128 --batch_size_val 128 --anno_path data/MSR-VTT/anns --video_path data/MSR-VTT/videos --datatype msrvtt --max_words 32 --max_frames 12 --video_framerate 1 --base_encoder ViT-B/32 --agg_module seqTransf --interaction ti --cdcr 2 --cdcr_alpha1 0.16 --cdcr_alpha2 0.0 --cdcr_lambda 0.001 --output_dir ckpts/ckpt_msrvtt_ti_cdcr
+# Weighted Token-wise Interaction + CDCR
+CUDA_VISIBLE_DEVICES=0,1,2,3 python -m torch.distributed.launch --nproc_per_node=4 main.py --do_train 1 --workers 8 --n_display 50 --epochs 5 --lr 1e-4 --coef_lr 1e-3 --batch_size 128 --batch_size_val 128 --anno_path data/MSR-VTT/anns --video_path data/MSR-VTT/videos --datatype msrvtt --max_words 32 --max_frames 12 --video_framerate 1 --base_encoder ViT-B/32 --agg_module seqTransf --interaction wti --wti_arch 2 --cdcr 3 --cdcr_alpha1 0.14 --cdcr_alpha2 0.0 --cdcr_lambda 0.001 --output_dir ckpts/ckpt_msrvtt_wti_cdcr
+
+
+# ViT-B/16
+# Token-wise Interaction + ViT-B/16
+CUDA_VISIBLE_DEVICES=0,1,2,3,4,5,6,7 python -m torch.distributed.launch --nproc_per_node=8 main.py --do_train 1 --workers 8 --n_display 50 --epochs 5 --lr 1e-4 --coef_lr 1e-3 --batch_size 128 --batch_size_val 128 --anno_path data/MSR-VTT/anns --video_path data/MSR-VTT/videos --datatype msrvtt --max_words 32 --max_frames 12 --video_framerate 1 --base_encoder ViT-B/16 --agg_module seqTransf --interaction ti --output_dir ckpts/ckpt_msrvtt_ti_vitb16
+# Token-wise Interaction + CDCR + ViT-B/16
+CUDA_VISIBLE_DEVICES=0,1,2,3,4,5,6,7 python -m torch.distributed.launch --nproc_per_node=8 main.py --do_train 1 --workers 8 --n_display 50 --epochs 5 --lr 1e-4 --coef_lr 1e-3 --batch_size 128 --batch_size_val 128 --anno_path data/MSR-VTT/anns --video_path data/MSR-VTT/videos --datatype msrvtt --max_words 32 --max_frames 12 --video_framerate 1 --base_encoder ViT-B/16 --agg_module seqTransf --interaction ti --cdcr 2 --cdcr_alpha1 0.16 --cdcr_alpha2 0.0 --cdcr_lambda 0.001 --output_dir ckpts/ckpt_msrvtt_ti_cdcr_vitb16
+# Weighted Token-wise Interaction + ViT-B/16
+CUDA_VISIBLE_DEVICES=0,1,2,3,4,5,6,7 python -m torch.distributed.launch --nproc_per_node=8 main.py --do_train 1 --workers 8 --n_display 50 --epochs 5 --lr 1e-4 --coef_lr 1e-3 --batch_size 128 --batch_size_val 128 --anno_path data/MSR-VTT/anns --video_path data/MSR-VTT/videos --datatype msrvtt --max_words 32 --max_frames 12 --video_framerate 1 --base_encoder ViT-B/16 --agg_module seqTransf --interaction wti --wti_arch 2 --output_dir ckpts/ckpt_msrvtt_wti_vitb16
+# Weighted Token-wise Interaction + CDCR + ViT-B/16
+CUDA_VISIBLE_DEVICES=0,1,2,3,4,5,6,7 python -m torch.distributed.launch --nproc_per_node=8 main.py --do_train 1 --workers 8 --n_display 50 --epochs 5 --lr 1e-4 --coef_lr 1e-3 --batch_size 128 --batch_size_val 128 --anno_path data/MSR-VTT/anns --video_path data/MSR-VTT/videos --datatype msrvtt --max_words 32 --max_frames 12 --video_framerate 1 --base_encoder ViT-B/16 --agg_module seqTransf --interaction wti --wti_arch 2 --cdcr 3 --cdcr_alpha1 0.11 --cdcr_alpha2 0.0 --cdcr_lambda 0.001 --output_dir ckpts/ckpt_msrvtt_wti_cdcr_vitb16
